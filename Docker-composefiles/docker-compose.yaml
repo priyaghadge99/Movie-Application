@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: movie
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    restart: always  
+    volumes:
+      - C:/Users/P/OneDrive/Desktop/docker/mysqldb:/var/lib/mysql        
+
+  movie-app:
+    image: priyaghadge/movie-service:coupon-communication
+    container_name: movie-app
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/movie
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
+    restart: always  
+    links:
+      - coupon-app      
+  coupon-app:
+    image: priyaghadge/coupon-service:communication
+    container_name: coupon-app
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/coupon
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "9000:9000"
+    restart: always
+          
+
+networks:
+    spring-cloud-network:
+        driver: bridge   
