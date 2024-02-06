@@ -1,0 +1,30 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: Movie-Service
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:movie}?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_ROOT_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    database: mysql   
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+       dialect: org.hibernate.dialect.MySQLDialect
+       
+  data:
+    jpa:
+      repositories:
+        enabled: true
+        
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true             
